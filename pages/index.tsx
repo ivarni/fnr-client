@@ -7,6 +7,8 @@ import {Gender, Ssn} from "../components/ssn-list/SsnList";
 
 const URL_BASE = process.env.SERVER_ROOT;
 
+const DATE_REGEX = /^(\d{0,4})-(\d{0,2})-(\d{0,2})$/;
+
 const Home = (props: {
     list: []
 }) => {
@@ -15,10 +17,26 @@ const Home = (props: {
 
     useEffect(() => {
         const fetcher = async () => {
-            const newList: Ssn[] = await fetch(`/api/ssn/${date}`)
+            const match = date.match(DATE_REGEX);
+            if (!match) {
+                return;
+            }
+            const dateString = [
+                match[1].padStart(4, '0'),
+                match[2].padStart(2, '0'),
+                match[3].padStart(2, '0')
+            ].join('-');
+
+            const d = new Date(dateString)
+            if (!(d instanceof Date && !isNaN(d.getTime()))) {
+                return;
+            }
+            const newList: Ssn[] = await fetch(`/api/ssn/${dateString}`)
                 .then(r => r.json())
                 .then(res => res)
-            setList(newList);
+            if (newList.length > 0) {
+                setList(newList);
+            }
         }
         fetcher();
     }, [date]);

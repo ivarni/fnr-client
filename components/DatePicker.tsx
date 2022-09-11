@@ -7,7 +7,13 @@ const DEFAULT_MONTH = '05';
 const DEFAULT_DAY = '09';
 export const DEFAULT_DATE = `${DEFAULT_YEAR}-${DEFAULT_MONTH}-${DEFAULT_DAY}`;
 
-const DATE_REGEX = /^(\d{4})-(\d{2})-(\d{2})$/;
+const DATE_REGEX = /^(\d{0,4})-(\d{0,2})-(\d{0,2})$/;
+
+interface updateArgs {
+    newValue: string,
+    setter: ((val: string) => void),
+    buildDate: ((val: string, match:string[]) => string)
+}
 
 const DatePicker = (props: {
     onChange: (value: string) => void
@@ -18,46 +24,38 @@ const DatePicker = (props: {
     const [month, setMonth] = useState(DEFAULT_MONTH);
     const [day, setDay] = useState(DEFAULT_DAY);
 
-    const onChange: ((e: React.ChangeEvent<HTMLInputElement>) => void) = (e) => {
-        setValue(e.currentTarget.value)
-        const match = e.currentTarget.value.match(DATE_REGEX);
+    const update: ((args: updateArgs) => void) = ({ newValue, setter, buildDate }) => {
+        setter(newValue);
+        const match = value.match(DATE_REGEX);
         if (match !== null) {
-            setYear(match[1])
-            setMonth(match[2])
-            setDay(match[3])
+            const _value = buildDate(newValue, match);
+            setValue(_value);
+            props.onChange(_value);
         }
-
-        props.onChange(e.currentTarget.value)
     }
 
     const updateDay: ((e: React.ChangeEvent<HTMLInputElement>) => void) = (e) => {
-        setDay(e.currentTarget.value);
-        const match = value.match(DATE_REGEX);
-        if (match !== null) {
-            const newValue = `${match[1]}-${match[2]}-${e.currentTarget.value}`;
-            setValue(newValue);
-            props.onChange(newValue);
-        }
+        update({
+            newValue: e.currentTarget.value,
+            setter: setDay,
+            buildDate: (val, match) => `${match[1]}-${match[2]}-${val}`
+        })
     }
 
     const updateMonth: ((e: React.ChangeEvent<HTMLInputElement>) => void) = (e) => {
-        setMonth(e.currentTarget.value);
-        const match = value.match(DATE_REGEX);
-        if (match !== null) {
-            const newValue = `${match[1]}-${e.currentTarget.value}-${match[3]}`;
-            setValue(newValue);
-            props.onChange(newValue);
-        }
+        update({
+            newValue: e.currentTarget.value,
+            setter: setMonth,
+            buildDate: (val, match) => `${match[1]}-${val}-${match[3]}`
+        })
     }
 
     const updateYear: ((e: React.ChangeEvent<HTMLInputElement>) => void) = (e) => {
-        setYear(e.currentTarget.value);
-        const match = value.match(DATE_REGEX);
-        if (match !== null) {
-            const newValue = `${e.currentTarget.value}-${match[2]}-${match[3]}`;
-            setValue(newValue);
-            props.onChange(newValue);
-        }
+        update({
+            newValue: e.currentTarget.value,
+            setter: setYear,
+            buildDate: (val, match) => `${val}-${match[2]}-${match[3]}`
+        })
     }
 
     return (
@@ -65,32 +63,24 @@ const DatePicker = (props: {
             <Day
                 value={day}
                 type="number"
+                min={1}
+                max={31}
                 onChange={updateDay}
             />/
             <Month
                 value={month}
                 type="number"
+                min={1}
+                max={12}
                 onChange={updateMonth}
             />/
             <Year
                 value={year}
                 type="number"
+                min={1900}
+                max={2035}
                 onChange={updateYear}
             />
-            <LogoWrapper>
-                <Logo/>
-                <NativeInput
-                    type="date"
-                    value={value}
-                    onChange={onChange}
-                />
-            </LogoWrapper>
-            {/*
-            <label>
-                Velg dato:&nbsp;
-            </label>
-        */
-            }
         </Wrapper>
     )
 }
@@ -99,15 +89,6 @@ export default DatePicker;
 
 const Wrapper = styled.div`
     display: flex;
-`
-
-const NativeInput = styled.input`
-    position: absolute;
-    top: 0;
-    left 0;
-    opacity: 0;
-    width: 100%;
-    pointer-events: none;
 `
 
 const BaseInput = styled.input`
@@ -131,21 +112,4 @@ const Month = styled(BaseInput)`
 
 const Day = styled(BaseInput)`
     width: 2.5rem;
-`
-
-const LogoWrapper = styled.div`
-    position: relative;
-    width: calc(2rem - 4px);
-    margin-left: 8px;
-    padding: 0 2px;
-    
-    &:focus-within {
-        border: 2px solid black;
-        padding: 0;
-    }
-`
-
-const Logo = styled(Calendar)`
-    width: 100%;
-    height: 100%;
 `
