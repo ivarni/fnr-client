@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Navigation from "../components/Navigation";
 import GlobalStyles from "../components/GlobalStyles";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 function MyApp({Component, pageProps}: AppProps) {
     return (
@@ -14,9 +15,13 @@ function MyApp({Component, pageProps}: AppProps) {
                 <Menu>
                     <Navigation />
                 </Menu>
-                <Component {...pageProps} />
+                <ComponentWrapper>
+                    <Component {...pageProps} />
+                </ComponentWrapper>
             </Main>
-            <Footer>asda</Footer>
+            <FooterWrapper>
+                <Footer />
+            </FooterWrapper>
             <GlobalStyles />
         </AppWrapper>
     )
@@ -27,6 +32,8 @@ const AppWrapper = styled.div`
   flex-direction: column;
   font-family: Roboto, sans-serif;
   padding: 24px;
+  height: 100%;
+  justify-content: space-between;
 `
 
 const HeaderWrapper = styled.div`
@@ -35,19 +42,25 @@ const HeaderWrapper = styled.div`
 
 const Menu = styled.div`
     //background-color: salmon;
-    min-width: 200px;
+    flex: 1;
+    min-width: 150px;
+`
+
+const ComponentWrapper = styled.div`
+    flex: 5;
 `
 
 const Main = styled.div`
     //background-color: blue;
     display: flex;
+    overflow: auto;
     
     @media (max-width: 768px) {
         flex-direction: column;
     }
 `
 
-const Footer = styled.div`
+const FooterWrapper = styled.div`
     //background-color: red;
 `
 
