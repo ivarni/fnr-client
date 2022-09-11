@@ -1,6 +1,5 @@
 import {createGlobalStyle} from "styled-components";
 
-
 const GlobalStyles = createGlobalStyle`
     // 1. Use a more-intuitive box-sizing model.
     *, *::before, *::after {

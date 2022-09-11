@@ -1,6 +1,6 @@
-import {Calendar} from "react-feather";
 import styled from "styled-components";
-import React, {useRef, useState} from "react";
+import React, {useState} from "react";
+import {useDebounce} from "react-use";
 
 const DEFAULT_YEAR = '1980';
 const DEFAULT_MONTH = '5';
@@ -18,7 +18,6 @@ interface updateArgs {
 const DatePicker = (props: {
     onChange: (value: string) => void
 }) => {
-
     const [value, setValue] = useState(DEFAULT_DATE);
     const [year, setYear] = useState(DEFAULT_YEAR);
     const [month, setMonth] = useState(DEFAULT_MONTH);
@@ -34,29 +33,41 @@ const DatePicker = (props: {
         }
     }
 
-    const updateDay: ((e: React.ChangeEvent<HTMLInputElement>) => void) = (e) => {
-        update({
-            newValue: e.currentTarget.value,
-            setter: setDay,
-            buildDate: (val, match) => `${match[1]}-${match[2]}-${val}`
-        })
-    }
+    useDebounce(
+        () => {
+            update({
+                newValue: day,
+                setter: setDay,
+                buildDate: (val, match) => `${match[1]}-${match[2]}-${val}`
+            })
+        },
+        300,
+        [day]
+    );
 
-    const updateMonth: ((e: React.ChangeEvent<HTMLInputElement>) => void) = (e) => {
-        update({
-            newValue: e.currentTarget.value,
-            setter: setMonth,
-            buildDate: (val, match) => `${match[1]}-${val}-${match[3]}`
-        })
-    }
+    useDebounce(
+        () => {
+            update({
+                newValue: month,
+                setter: setMonth,
+                buildDate: (val, match) => `${match[1]}-${val}-${match[3]}`
+            })
+        },
+        300,
+        [month]
+    );
 
-    const updateYear: ((e: React.ChangeEvent<HTMLInputElement>) => void) = (e) => {
-        update({
-            newValue: e.currentTarget.value,
-            setter: setYear,
-            buildDate: (val, match) => `${val}-${match[2]}-${match[3]}`
-        })
-    }
+    useDebounce(
+        () => {
+            update({
+                newValue: year,
+                setter: setYear,
+                buildDate: (val, match) => `${val}-${match[2]}-${match[3]}`
+            })
+        },
+        300,
+        [year]
+    );
 
     return (
         <Wrapper>
@@ -65,21 +76,21 @@ const DatePicker = (props: {
                 type="number"
                 min={1}
                 max={31}
-                onChange={updateDay}
+                onChange={(e) => setDay(e.currentTarget.value)}
             />/
             <Month
                 value={month}
                 type="number"
                 min={1}
                 max={12}
-                onChange={updateMonth}
+                onChange={(e) => setMonth(e.currentTarget.value)}
             />/
             <Year
                 value={year}
                 type="number"
                 min={1900}
                 max={2035}
-                onChange={updateYear}
+                onChange={(e) => setYear(e.currentTarget.value)}
             />
         </Wrapper>
     )
