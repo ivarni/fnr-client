@@ -3,8 +3,8 @@ import styled from "styled-components";
 import React, {useRef, useState} from "react";
 
 const DEFAULT_YEAR = '1980';
-const DEFAULT_MONTH = '05';
-const DEFAULT_DAY = '09';
+const DEFAULT_MONTH = '5';
+const DEFAULT_DAY = '9';
 export const DEFAULT_DATE = `${DEFAULT_YEAR}-${DEFAULT_MONTH}-${DEFAULT_DAY}`;
 
 const DATE_REGEX = /^(\d{0,4})-(\d{0,2})-(\d{0,2})$/;

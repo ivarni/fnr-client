@@ -1,11 +1,12 @@
-import {GetStaticProps, GetServerSideProps} from 'next';
+import {GetStaticProps} from 'next';
 import Head from 'next/head'
 import SsnList from '../components/ssn-list';
 import DatePicker, {DEFAULT_DATE} from "../components/DatePicker";
 import {useEffect, useState} from "react";
-import {Gender, Ssn} from "../components/ssn-list/SsnList";
-
-const URL_BASE = process.env.SERVER_ROOT;
+import {Ssn} from "../components/ssn-list/SsnList";
+import styled from "styled-components";
+import differenceInYears from 'date-fns/differenceInYears';
+import {isBefore} from "date-fns";
 
 const DATE_REGEX = /^(\d{0,4})-(\d{0,2})-(\d{0,2})$/;
 
@@ -28,7 +29,7 @@ const Home = (props: {
             ].join('-');
 
             const d = new Date(dateString)
-            if (!(d instanceof Date && !isNaN(d.getTime()))) {
+            if (!(d instanceof Date) || isNaN(d.getTime()) || isBefore(new Date(), d)) {
                 return;
             }
             const newList: Ssn[] = await fetch(`/api/ssn/${dateString}`)
@@ -41,6 +42,8 @@ const Home = (props: {
         fetcher();
     }, [date]);
 
+    const age = differenceInYears(new Date(), new Date(date));
+
     return (
         <div>
             <Head>
@@ -49,23 +52,48 @@ const Home = (props: {
                 <link rel="icon" href="/favicon.svg"/>
             </Head>
 
-            <main>
+            <Main>
+                <h2>Velg en dato</h2>
                 <DatePicker
                     onChange={setDate}
                 />
+                {age > 0 && (
+                    <div>
+                        Alder: {age} år
+                    </div>
+                )}
                 <SsnList
                     list={list}
                     date={date}
                 />
-            </main>
+            </Main>
         </div>
     )
 }
 
+const Main = styled.main`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+`
+
 export default Home
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    const list: {}[] = await fetch(`${process.env.SERVER_PROTOCOL}://${process.env.SERVER_ROOT}/generate/${DEFAULT_DATE}`)
+    const match = DEFAULT_DATE.match(DATE_REGEX);
+    if (!match) {
+        return {
+            props: { list: [] }
+        }
+    }
+    const dateString = [
+        match[1].padStart(4, '0'),
+        match[2].padStart(2, '0'),
+        match[3].padStart(2, '0')
+    ].join('-');
+
+    const list: {}[] = await fetch(`${process.env.SERVER_PROTOCOL}://${process.env.SERVER_ROOT}/generate/${dateString}`)
         .then(r => r.json())
         .then(res => res)
 
