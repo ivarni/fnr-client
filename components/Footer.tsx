@@ -7,9 +7,9 @@ const Footer = () => {
 
     return (
         <Wrapper>
-            <div>
+            <About>
                 Nilsen Solutions 2022
-            </div>
+            </About>
             <ListWrapper>
                 <div>
                     Bygget med
@@ -45,11 +45,26 @@ const Wrapper = styled.div`
     padding-top: 16px;
     margin-top: 8px;
     border-top: 1px solid;
+    
+    @media (max-width: 768px) {
+        flex-direction: column;
+        text-align: center;
+    }
+`
+
+const About = styled.div`
+    @media (max-width: 768px) {
+        display: none;
+    }
 `
 
 const ListWrapper = styled.div`
     display: flex;
-    align-items: center;    
+    align-items: center;
+        
+    @media (max-width: 768px) {
+        flex-direction: column;
+    }    
 `
 
 const List = styled.ul`

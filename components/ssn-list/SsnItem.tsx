@@ -33,6 +33,10 @@ const ListItem = styled.li<{ style: { '--color': string } }>`
     display: flex;
     gap: 16px;
     align-items: center;
+    
+    @media (max-width: 768px) {
+        justify-content: center;
+    }    
 `
 
 const CopyButton = styled.button`

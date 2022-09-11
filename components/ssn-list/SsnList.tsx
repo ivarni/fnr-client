@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import SsnItem from "./SsnItem";
+import {Link2} from "react-feather";
 
 export enum Gender { MALE = 'MALE', FEMALE = 'FEMALE' }
 
@@ -22,9 +23,14 @@ const SsnList = (props: {
     return (
         <Wrapper>
             <ItemWrapper>
-                <Heading>
+                <Heading id="males">
                     Menn
                 </Heading>
+                <MobileOnly>
+                    <a href="#females">
+                        <LinkIcon /> Kvinner
+                    </a>
+                </MobileOnly>
                 <List>
                     {males.map(({ssn}) => (
                         <SsnItem
@@ -35,9 +41,14 @@ const SsnList = (props: {
                 </List>
             </ItemWrapper>
             <ItemWrapper>
-                <Heading>
+                <Heading id="females">
                     Kvinner
                 </Heading>
+                <MobileOnly>
+                    <a href="#males">
+                       <LinkIcon /> Menn
+                    </a>
+                </MobileOnly>
                 <List>
                     {females.map(({ssn}) => (
                         <SsnItem
@@ -56,6 +67,11 @@ const Wrapper = styled.div`
     display: flex;
     gap: 64px;
     width: 100%;
+    
+    @media (max-width: 768px) {
+        flex-direction: column;
+        text-align: center;
+    }    
 `
 
 const ItemWrapper = styled.div`
@@ -64,6 +80,25 @@ const ItemWrapper = styled.div`
 
 const Heading = styled.h2`
     text-align: center;
+`
+
+const MobileOnly = styled.div`
+    display: none;
+    
+    @media (max-width: 768px) {
+        display: block;
+        
+        a {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            align-items: center;
+        }
+    }
+`
+
+const LinkIcon = styled(Link2)`
+    display: inline;
 `
 
 const List = styled.ul`
