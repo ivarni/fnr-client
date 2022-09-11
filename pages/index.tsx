@@ -1,11 +1,10 @@
 import {GetStaticProps, GetServerSideProps} from 'next';
 import Head from 'next/head'
 import SsnList from '../components/ssn-list';
-import DatePicker from "../components/DatePicker";
+import DatePicker, {DEFAULT_DATE} from "../components/DatePicker";
 import {useEffect, useState} from "react";
 import {Gender, Ssn} from "../components/ssn-list/SsnList";
 
-const DEFAULT_DATE = '1980-05-09';
 const URL_BASE = process.env.SERVER_ROOT;
 
 const Home = (props: {
@@ -22,7 +21,7 @@ const Home = (props: {
             setList(newList);
         }
         fetcher();
-    },[date]);
+    }, [date]);
 
     return (
         <div>
@@ -42,20 +41,19 @@ const Home = (props: {
                 />
             </main>
         </div>
-)
+    )
 }
 
 export default Home
 
-export const getStaticProps: GetStaticProps = async (context) =>
-    {
-        const list:{}[] = await fetch(`${process.env.SERVER_PROTOCOL}://${process.env.SERVER_ROOT}/generate/${DEFAULT_DATE}`)
-            .then(r => r.json())
-            .then(res => res)
+export const getStaticProps: GetStaticProps = async (context) => {
+    const list: {}[] = await fetch(`${process.env.SERVER_PROTOCOL}://${process.env.SERVER_ROOT}/generate/${DEFAULT_DATE}`)
+        .then(r => r.json())
+        .then(res => res)
 
-        return {
-            props: {
-                list
-            }
+    return {
+        props: {
+            list
         }
     }
+}
