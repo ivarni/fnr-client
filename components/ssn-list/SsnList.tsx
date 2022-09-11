@@ -21,7 +21,7 @@ const SsnList = (props: {
 
     return (
         <Wrapper>
-            <div>
+            <ItemWrapper>
                 <Heading>
                     Menn
                 </Heading>
@@ -33,8 +33,8 @@ const SsnList = (props: {
                         />
                     ))}
                 </List>
-            </div>
-            <div>
+            </ItemWrapper>
+            <ItemWrapper>
                 <Heading>
                     Kvinner
                 </Heading>
@@ -47,7 +47,7 @@ const SsnList = (props: {
                     ))}
                 </List>
 
-            </div>
+            </ItemWrapper>
         </Wrapper>
     )
 }
@@ -55,6 +55,11 @@ const SsnList = (props: {
 const Wrapper = styled.div`
     display: flex;
     gap: 64px;
+    width: 100%;
+`
+
+const ItemWrapper = styled.div`
+    flex: 1;
 `
 
 const Heading = styled.h2`
@@ -63,12 +68,13 @@ const Heading = styled.h2`
 
 const List = styled.ul`
     list-style-type: none;
-    display: flex;
-    flex-wrap: wrap;
     padding: 0;
     padding-top: 24px;
-    gap: 24px;
-    font-family: monospace;
+    font-family: Roboto Mono;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    row-gap: 10px;
+    width: 100%;
 `
 
 export default SsnList;

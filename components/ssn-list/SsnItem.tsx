@@ -38,6 +38,7 @@ const ListItem = styled.li<{ style: { '--color': string } }>`
 const CopyButton = styled.button`
     background: none;
     border: none;
+    cursor: pointer;
     
     &:focus {
         outline-offset: 4px;
