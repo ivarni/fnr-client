@@ -36,6 +36,7 @@ export default class MyDocument extends Document {
                 <Head>
                     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto" />
                     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono" />
+                    <script defer data-domain="ssn.nilsen.solutions" src="https://plausible.io/js/plausible.js"></script>
                 </Head>
                 <body>
                     <Main />
