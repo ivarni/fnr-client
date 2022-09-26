@@ -16,6 +16,11 @@ const Home = (props: {
     const [date, setDate] = useState(DEFAULT_DATE);
     const [list, setList] = useState<Ssn[]>(props.list);
 
+    // Forcefully remove any serviceworkers hanging around from ealier version of app running on same domain
+    useEffect(() => {
+        navigator.serviceWorker.getRegistrations().then( function(registrations) { for(let registration of registrations) { registration.unregister(); } });
+    }, []);
+
     useEffect(() => {
         const fetcher = async () => {
             const match = date.match(DATE_REGEX);
