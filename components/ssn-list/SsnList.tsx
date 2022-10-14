@@ -105,7 +105,8 @@ const List = styled.ul`
     list-style-type: none;
     padding: 0;
     padding-top: 24px;
-    font-family: Roboto Mono;
+    font-family: 'Roboto Mono';
+    font-weight: 400;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
     row-gap: 10px;

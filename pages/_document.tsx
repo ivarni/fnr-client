@@ -1,5 +1,5 @@
-import Document, {DocumentContext, DocumentInitialProps, Html, Head, Main, NextScript} from 'next/document'
-import { ServerStyleSheet } from 'styled-components'
+import Document, {DocumentContext, DocumentInitialProps, Head, Html, Main, NextScript} from 'next/document'
+import {ServerStyleSheet} from 'styled-components'
 
 export default class MyDocument extends Document {
     static async getInitialProps(
@@ -34,14 +34,11 @@ export default class MyDocument extends Document {
         return (
             <Html lang="no">
                 <Head>
-                    <link rel="preconnect" href="https://fonts.gstatic.com">
-                    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto" />
-                    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono" />
                     <script defer data-domain="ssn.nilsen.solutions" src="https://plausible.io/js/plausible.js"></script>
                 </Head>
                 <body>
-                    <Main />
-                    <NextScript />
+                    <Main/>
+                    <NextScript/>
                 </body>
             </Html>
         )

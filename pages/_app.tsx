@@ -1,5 +1,9 @@
 import type {AppProps} from 'next/app'
 import styled from 'styled-components';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/700.css';
+import '@fontsource/roboto-mono';
+
 import Navigation from "../components/Navigation";
 import GlobalStyles from "../components/GlobalStyles";
 import Header from "../components/Header";
@@ -30,7 +34,7 @@ function MyApp({Component, pageProps}: AppProps) {
 const AppWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  font-family: Roboto, sans-serif;
+  font-family: 'Roboto', sans-serif;
   padding: 24px;
   height: 100%;
   justify-content: space-between;
