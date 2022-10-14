@@ -18,7 +18,11 @@ const Home = (props: {
 
     // Forcefully remove any serviceworkers hanging around from ealier version of app running on same domain
     useEffect(() => {
-        navigator.serviceWorker.getRegistrations().then( function(registrations) { for(let registration of registrations) { registration.unregister(); } });
+        try {
+            navigator.serviceWorker.getRegistrations().then( function(registrations) { for(let registration of registrations) { registration.unregister(); } });
+        } catch (e) {
+            // shrug
+        }
     }, []);
 
     useEffect(() => {
