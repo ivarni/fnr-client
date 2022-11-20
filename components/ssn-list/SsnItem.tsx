@@ -18,9 +18,8 @@ const SsnItem = (props: { ssn: string }) => {
         >
             {props.ssn}
             <CopyButton
-                role="button"
-                tabIndex={0}
                 onClick={onClick}
+                aria-label="Kopier fødselsnummer"
             >
                 <Copy/>
             </CopyButton>
