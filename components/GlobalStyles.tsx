@@ -1,6 +1,17 @@
 import {createGlobalStyle} from "styled-components";
 
+import {SHADOWS} from "../constants";
+
 const GlobalStyles = createGlobalStyle`
+    :root {
+      ${SHADOWS}
+    }
+    
+    body {
+      font-size: ${18/16}rem;
+      overflow: scroll;
+    }
+ 
     // 1. Use a more-intuitive box-sizing model.
     *, *::before, *::after {
       box-sizing: border-box;

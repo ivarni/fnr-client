@@ -1,6 +1,6 @@
-import styled from "styled-components";
 import React, {useState} from "react";
 import {useDebounce} from "react-use";
+import styled from "styled-components";
 
 const DEFAULT_YEAR = '1980';
 const DEFAULT_MONTH = '5';
@@ -16,12 +16,14 @@ interface updateArgs {
 }
 
 const DatePicker = (props: {
-    onChange: (value: string) => void
+    onChange: (value: string) => void,
 }) => {
     const [value, setValue] = useState(DEFAULT_DATE);
     const [year, setYear] = useState(DEFAULT_YEAR);
     const [month, setMonth] = useState(DEFAULT_MONTH);
     const [day, setDay] = useState(DEFAULT_DAY);
+
+    const { onChange, ...rest } = props;
 
     const update: ((args: updateArgs) => void) = ({ newValue, setter, buildDate }) => {
         setter(newValue);
@@ -70,22 +72,22 @@ const DatePicker = (props: {
     );
 
     return (
-        <Wrapper>
-            <Day
+        <Wrapper {...rest}>
+            <Input
                 value={day}
                 type="number"
                 min={1}
                 max={31}
                 onChange={(e) => setDay(e.currentTarget.value)}
             />/
-            <Month
+            <Input
                 value={month}
                 type="number"
                 min={1}
                 max={12}
                 onChange={(e) => setMonth(e.currentTarget.value)}
             />/
-            <Year
+            <Input
                 value={year}
                 type="number"
                 min={1900}
@@ -99,28 +101,15 @@ const DatePicker = (props: {
 export default DatePicker;
 
 const Wrapper = styled.div`
+    width: fit-content;
     display: flex;
-`
+    gap: 8px;
+`;
 
-const BaseInput = styled.input`
-    border: none;
-    border-bottom: 1px solid;
-    text-align: center;
-    
-    &:focus {
-        outline: none;
-        border: 2px solid black;
-    }
-`
-
-const Year = styled(BaseInput)`   
-    width: 4.5rem;
-`
-
-const Month = styled(BaseInput)`
-    width: 2.5rem;
-`
-
-const Day = styled(BaseInput)`
-    width: 2.5rem;
-`
+const Input = styled.input`
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  box-shadow: var(--shadow-elevation-medium);
+  text-align: center;
+`;

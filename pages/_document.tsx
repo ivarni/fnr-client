@@ -34,7 +34,12 @@ export default class MyDocument extends Document {
         return (
             <Html lang="no">
                 <Head>
-                    <script defer data-domain="ssn.nilsen.solutions" src="https://plausible.io/js/plausible.js"></script>
+                    <script
+                        defer
+                        data-domain="ssn.nilsen.solutions"
+                        src="https://plausible.io/js/plausible.js"
+                        key="tracking">
+                    </script>
                 </Head>
                 <body>
                     <Main/>

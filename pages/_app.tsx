@@ -1,35 +1,86 @@
+import {useState} from "react";
 import type {AppProps} from 'next/app'
 import styled from 'styled-components';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/700.css';
-import '@fontsource/roboto-mono';
+import {Cabin} from '@next/font/google'
 
-import Navigation from "../components/Navigation";
 import GlobalStyles from "../components/GlobalStyles";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "../components/header";
+import Main from "../components/main";
+import Menu from "../components/menu";
+import Footer from "../components/footer";
+
+import {DEFAULT_DATE} from "../components/menu/DatePicker";
+import {Gender} from "../components/fnr-list/Fnr";
+
+const cabin = Cabin({ subsets: ['latin'] })
 
 function MyApp({Component, pageProps}: AppProps) {
+    const [date, setDate] = useState(DEFAULT_DATE);
+    const [genderList, setGenderList] = useState<Gender[]>(['MALE', 'FEMALE']);
+
+    const updateGenderList = (gender: Gender, selected: boolean) => {
+        if (selected) {
+            setGenderList(genderList.concat(gender));
+        } else {
+            setGenderList(genderList.filter(g => g != gender));
+        }
+    }
+
     return (
+        <>
+            <GlobalStyles />
+            <Layout className={cabin.className}>
+                <Header />
+                <Menu
+                    onDateChange={(newDate) => setDate(newDate)}
+                    onGenderChange={updateGenderList}
+                />
+                <Main>
+                    <Component
+                        {...pageProps}
+                        date={date}
+                        showGenders={genderList}
+                    />
+                </Main>
+                <Footer />
+            </Layout>
+
+            {/*
         <AppWrapper>
             <HeaderWrapper>
-                <Header />
+                <OldHeader />
             </HeaderWrapper>
-            <Main>
-                <Menu>
+            <OldMain>
+                <OldMenu>
                     <Navigation />
-                </Menu>
+                </OldMenu>
                 <ComponentWrapper>
                     <Component {...pageProps} />
                 </ComponentWrapper>
-            </Main>
+            </OldMain>
             <FooterWrapper>
-                <Footer />
+                <OldFooter />
             </FooterWrapper>
             <GlobalStyles />
         </AppWrapper>
+            */}
+        </>
     )
 }
+
+const Layout = styled.div`
+  height: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(310px, 1fr) 4fr;
+  grid-template-rows: 92px 8fr 0;
+  grid-template-areas: 
+    "header header"
+    "menu main"
+    "footer footer"
+  ;
+`;
 
 const AppWrapper = styled.div`
   display: flex;
@@ -44,7 +95,7 @@ const HeaderWrapper = styled.div`
     //background-color: yellow;
 `
 
-const Menu = styled.div`
+const OldMenu = styled.div`
     //background-color: salmon;
     flex: 1;
     min-width: 150px;
@@ -54,7 +105,7 @@ const ComponentWrapper = styled.div`
     flex: 5;
 `
 
-const Main = styled.div`
+const OldMain = styled.div`
     //background-color: blue;
     display: flex;
     overflow: auto;
